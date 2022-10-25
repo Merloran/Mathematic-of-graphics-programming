@@ -39,6 +39,11 @@ public:
 		return Vector3(this->X - V.X, this->Y - V.Y, this->Z - V.Z);
 	}
 
+	Vector3 operator-()
+	{
+		return Vector3(-this->X, -this->Y, -this->Z);
+	}
+
 	void operator-=(const Vector3& V)
 	{
 		this->X -= V.X;
@@ -114,6 +119,7 @@ public:
 			 + this->Z * this->Z;
 	}
 
+	// Returns normalized vector
 	Vector3 Normalize()
 	{
 		Type length = this->Length();

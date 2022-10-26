@@ -81,7 +81,7 @@ public:
 
 	Vector3 operator/(const Type& S)
 	{
-		if (S != 0)
+		if (S != (Type)0)
 		{
 			return Vector3(this->X / S, this->Y / S, this->Z / S);
 		}
@@ -93,7 +93,7 @@ public:
 
 	void operator/=(const Type& S)
 	{
-		if (S != 0)
+		if (S != (Type)0)
 		{
 			this->X /= S;
 			this->Y /= S;
@@ -123,7 +123,7 @@ public:
 	Vector3 Normalize()
 	{
 		Type length = this->Length();
-		if (length != 0)
+		if (length != (Type)0)
 		{
 			return *this / length;
 		}

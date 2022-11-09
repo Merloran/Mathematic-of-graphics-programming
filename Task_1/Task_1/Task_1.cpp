@@ -3,7 +3,7 @@
 #include "Source/Public/Vector.h"
 
 // Macro for fast type change ( default: double )
-#define TestType double
+#define TestType int
 
 int main()
 {

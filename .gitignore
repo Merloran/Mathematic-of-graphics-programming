@@ -1,8 +1,6 @@
 # Visual Studio
 x64
 .vs
-*.filters
-*.user
 
 # Prerequisites
 *.d

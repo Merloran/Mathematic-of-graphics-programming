@@ -169,6 +169,19 @@ public:
 		}
 	}
 
+	Matrix operator-()
+	{
+		Matrix Temp;
+		for (uint32 x = (uint32)0; x < XSize; ++x)
+		{
+			for (uint32 y = (uint32)0; y < YSize; ++y)
+			{
+				Temp[x][y] = -this->Elements[x][y];
+			}
+		}
+		return Temp;
+	}
+
 	Matrix operator-(const Matrix& M)
 	{
 		Matrix Temp;
@@ -276,6 +289,12 @@ public:
 		Matrix Temp = Matrix(Values);
 		Temp.XSize = M1.XSize;
 		Temp.YSize = M2.YSize;
+
+		if (M1.YSize != M2.XSize)
+		{
+			std::cout << "Cannot multiply matrix " << M1.XSize << "x" << M1.YSize << " by matrix " << M2.XSize << "x" << M2.YSize << "!" << std::endl;
+			return;
+		}
 
 		for (uint32 x = (uint32)0; x < M1.XSize; ++x)
 		{

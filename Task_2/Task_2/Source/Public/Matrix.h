@@ -219,16 +219,7 @@ public:
 
 	Matrix operator*(const Matrix& M)
 	{
-
-		Type** Values = new Type * [XSize];
-		for (uint32 i = (uint32)0; i < XSize; ++i)
-		{
-			Values[i] = new Type[M.YSize];
-		}
-
-		Matrix Temp = Matrix(Values);
-		Temp.XSize = XSize;
-		Temp.YSize = M.YSize;
+		Matrix Temp;
 
 		if (YSize != M.XSize)
 		{
@@ -251,15 +242,7 @@ public:
 
 	void operator*=(const Matrix& M)
 	{
-		Type** Values = new Type * [XSize];
-		for (uint32 i = (uint32)0; i < XSize; ++i)
-		{
-			Values[i] = new Type[M.YSize];
-		}
-
-		Matrix Temp = Matrix(Values);
-		Temp.XSize = XSize;
-		Temp.YSize = M.YSize;
+		Matrix Temp;
 
 		if (YSize != M.XSize)
 		{
@@ -280,6 +263,7 @@ public:
 		*this = Temp;
 	}
 
+	// Still in experimental phase xD
 	Matrix Multiply(const Matrix<Type, Rows, Cols>& M1, const Matrix<Type, Cols, Rows>& M2)
 	{
 

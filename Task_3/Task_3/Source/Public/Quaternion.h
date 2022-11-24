@@ -95,8 +95,8 @@ public:
 		Type Divider = Q.W * Q.W + V2.DotProduct(V2);
 		if (Divider != (Type)0)
 		{
-			return Quaternion(this->W * Q.W - V1.DotProduct(V2) / Divider,
-							 (V2 * -this->W  + V1 * Q.W - V1.Cross(V2)) / Divider);
+			return Quaternion((this->W * Q.W + V1.DotProduct(V2)) / Divider,
+							  (V2 * -this->W  + V1 * Q.W - V1.Cross(V2)) / Divider);
 		}
 		else
 		{
@@ -111,8 +111,8 @@ public:
 		Type Divider = Q.W * Q.W + V2.DotProduct(V2);
 		if (Divider != (Type)0)
 		{
-			Quaternion Temp(this->W * Q.W - V1.DotProduct(V2) / Divider,
-						   (V2 * -this->W + V1 * Q.W - V1.Cross(V2)) / Divider);
+			Quaternion Temp((this->W * Q.W + V1.DotProduct(V2)) / Divider,
+							(V2 * -this->W + V1 * Q.W - V1.Cross(V2)) / Divider);
 			this->W = Temp.W;
 			this->X = Temp.X;
 			this->Y = Temp.Y;
@@ -128,10 +128,10 @@ public:
 	{
 		Quaternion Q(cos(Vector3<Type>::DegToRad(Degrees) / (Type)2), Axis * sin(Vector3<Type>::DegToRad(Degrees) / (Type)2) / Axis.Length());
 
-		return (Q * Quaternion((Type)0, V) * Q.Inverse()).Imaginary();
+		return (Q * Quaternion((Type)0, V) * Q.Conjugate()).Imaginary();
 	}
 
-	Quaternion Inverse()
+	Quaternion Conjugate()
 	{
 		return Quaternion(this->W, -this->Imaginary());
 	}

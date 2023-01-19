@@ -33,6 +33,7 @@ int main()
 		{
 			double t0 = (P0 - P1).Cross(V1).DotProduct(V0.Cross(V1)) / V0.Cross(V1).LengthSquared();
 			(P0 + V0 * t0).ToString();
+			(P1 + V1 * t0).ToString();
 		}
 		else
 		{

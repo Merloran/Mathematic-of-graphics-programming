@@ -5,11 +5,11 @@ class Plane;
 class Line
 {
 public:
-	Vec3f V;
-	Vec3f P;
+	Vec3f Direction;
+	Vec3f Point;
 
 	Line();
-	Line(Vec3f V, Vec3f P);
+	Line(Vec3f Direction, Vec3f Point);
 	
 	Vec3f Intersect(Line& L);
 	
@@ -17,7 +17,7 @@ public:
 	
 	float GetAngle(Line& L);
 	
-	float GetAngle(Plane& P);
+	float GetAngle(Plane& Point);
 	
 	static Line INVALID();
 };

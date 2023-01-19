@@ -5,12 +5,12 @@ class Line;
 class Plane
 {
 public:
-	Vec3f N; //Normal to plane
-	Vec3f P; //Point on plane
+	Vec3f Normal; //Normal to plane
+	Vec3f Point; //Point on plane
 	
-	Plane(Vec3f N, Vec3f P)
-		: N(N)
-		, P(P)
+	Plane(Vec3f Normal, Vec3f Point)
+		: Normal(Normal)
+		, Point(Point)
 	{}
 	
 	

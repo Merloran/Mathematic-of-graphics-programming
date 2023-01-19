@@ -3,19 +3,19 @@
 
 Line Plane::Intersect(Plane& P)
 {
-	Vec3f V = N.Cross(P.N);
-	float Divisior = V.LengthSquared();
+	Vec3f Direction = Normal.Cross(P.Normal);
+	float Divisior = Direction.LengthSquared();
 	if (Divisior != 0.0f)
 	{
-		float D1 = -this->P.DotProduct(N);
-		float D2 = -P.P.DotProduct(P.N);
+		float D1 = -this->Point.DotProduct(Normal);
+		float D2 = -P.Point.DotProduct(P.Normal);
 
-		return Line(V, ((N.Cross(P.N) * D1) + (N.Cross(V) * D2)) / Divisior);
+		return Line(Direction, ((Normal.Cross(P.Normal) * D1) + (Normal.Cross(Direction) * D2)) / Divisior);
 	}
 	return Line::INVALID();
 }
 
 float Plane::GetAngle(Plane& P)
 {
-	return Vec3f::RadToDeg(Vec3f::GetAngle(N, P.N));
+	return Vec3f::RadToDeg(Vec3f::GetAngle(Normal, P.Normal));
 }

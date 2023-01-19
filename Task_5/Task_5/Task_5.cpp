@@ -7,17 +7,18 @@
 #include "Source/Public/Plane.h"
 #include "Source/Public/Camera.h"
 
-const int SIZE = 60;
-int main() {
+const int change = 5;
 
-    //bryla2x2x2
+const int SIZE = 60;
+int main() 
+{
     float cubeSize = 2;
-    Plane p_front = Plane(Vec3f(-cubeSize / 2, -cubeSize / 2, cubeSize / 2), Vec3f(0, 0, 1));
-    Plane p_back = Plane(Vec3f(-cubeSize / 2, -cubeSize / 2, -cubeSize / 2), Vec3f(0, 0, -1));
-    Plane p_left = Plane(Vec3f(-cubeSize / 2, -cubeSize / 2, cubeSize / 2), Vec3f(-1, 0, 0));
-    Plane p_right = Plane(Vec3f(cubeSize / 2, -cubeSize / 2, cubeSize / 2), Vec3f(1, 0, 0));
-    Plane p_bottom = Plane(Vec3f(-cubeSize / 2, -cubeSize / 2, cubeSize / 2), Vec3f(0, -1, 0));
-    Plane p_up = Plane(Vec3f(-cubeSize / 2, cubeSize / 2, cubeSize / 2), Vec3f(0, 1, 0));
+    Plane p_front  = Plane(Vec3f( 0,  0,  1), Vec3f(-cubeSize / 2, -cubeSize / 2,  cubeSize / 2));
+    Plane p_back   = Plane(Vec3f( 0,  0, -1), Vec3f(-cubeSize / 2, -cubeSize / 2, -cubeSize / 2));
+    Plane p_left   = Plane(Vec3f(-1,  0,  0), Vec3f(-cubeSize / 2, -cubeSize / 2,  cubeSize / 2));
+    Plane p_right  = Plane(Vec3f( 1,  0,  0), Vec3f( cubeSize / 2, -cubeSize / 2,  cubeSize / 2));
+    Plane p_bottom = Plane(Vec3f( 0, -1,  0), Vec3f(-cubeSize / 2, -cubeSize / 2,  cubeSize / 2));
+    Plane p_up     = Plane(Vec3f( 0,  1,  0), Vec3f(-cubeSize / 2,  cubeSize / 2,  cubeSize / 2));
 
     char tab[SIZE][SIZE];
     for (int i = 0; i < SIZE; i++)
@@ -36,40 +37,41 @@ int main() {
     float angleY = 0;
     float angleZ = 0;
 
-    int input;
+    char input;
     float zoom = 3;
     do {
         cam = Camera(zoom);
-        cam.rotateX(angleX);
-        cam.rotateY(angleY);
-        //cam.rotateAxis(45, Vec3f(1, 1, 0));
-        cam.rotateZ(angleZ);
-        //        std::cout << "pos: " << cam.position << ", dir: " << cam.direction << ", up: " << cam.up << std::endl;
+        cam.RotateX(angleX);
+        cam.RotateY(angleY);
+        cam.RotateZ(angleZ);
 
         Vec3f rightDirectionView = cam.direction.Cross(cam.up);
-        Line ray = Line(cam.position, cam.direction);
+        Line ray = Line(cam.direction, cam.position);
         Vec3f point;
         bool isCrossing = false;
-        for (int i = 0; i < SIZE; i++) { //wiersze
-            for (int j = 0; j < SIZE; j++) { //kolumny
-                ray.V =
+        for (int X = 0; X < SIZE; X++) { //wiersze
+            for (int Y = 0; Y < SIZE; Y++) { //kolumny
+                ray.Direction =
                     cam.direction +
-                    Vec3f((j - SIZE / 2) * (width / 60) * rightDirectionView.X,
-                        (j - SIZE / 2) * (width / 60) * rightDirectionView.Y,
-                        (j - SIZE / 2) * (width / 60) * rightDirectionView.Z) +
-                    Vec3f((SIZE / 2 - i) * width / 60 * cam.up.X,
-                        (SIZE / 2 - i) * width / 60 * cam.up.Y,
-                        (SIZE / 2 - i) * width / 60 * cam.up.Z);; //od górnego lewego rogu
-                if (ray.Intersect(p_front) != !Vec3f()) 
+                    Vec3f((Y - SIZE / 2) * (width / 60) * rightDirectionView.X,
+                        (Y - SIZE / 2) * (width / 60) * rightDirectionView.Y,
+                        (Y - SIZE / 2) * (width / 60) * rightDirectionView.Z) +
+                    Vec3f((SIZE / 2 - X) * width / 60 * cam.up.X,
+                        (SIZE / 2 - X) * width / 60 * cam.up.Y,
+                        (SIZE / 2 - X) * width / 60 * cam.up.Z); //od górnego lewego rogu
+
+                point = ray.Intersect(p_front);
+                if (point != Vec3f::INVALID()) 
                 {
-                    point = ray.Intersect(p_front);
                     if (point.X <= cubeSize / 2 && point.Y <= cubeSize / 2 && point.Z <= cubeSize / 2
                         && point.X >= -cubeSize / 2 && point.Y >= -cubeSize / 2 && point.Z >= -cubeSize / 2)
                     {
                         isCrossing = true;
                     }
                 }
-                if (ray.Intersect(p_back) != !Vec3f()) 
+
+                point = ray.Intersect(p_back);
+                if (point != Vec3f::INVALID())
                 {
                     point = ray.Intersect(p_back);
                     if (point.X <= cubeSize / 2 && point.Y <= cubeSize / 2 && point.Z <= cubeSize / 2
@@ -78,34 +80,42 @@ int main() {
                         isCrossing = true;
                     }
                 }
-                if (ray.Intersect(p_left) != !Vec3f()) {
+
+                point = ray.Intersect(p_left);
+                if (point != Vec3f::INVALID())
+                {
                     point = ray.Intersect(p_left);
                     if (point.X <= cubeSize / 2 && point.Y <= cubeSize / 2 && point.Z <= cubeSize / 2
                         && point.X >= -cubeSize / 2 && point.Y >= -cubeSize / 2 && point.Z >= -cubeSize / 2) 
                     {
                         isCrossing = true;
                     }
+                }
 
-                }
-                if (ray.Intersect(p_right) != !Vec3f()) 
+                point = ray.Intersect(p_right);
+                if (point != Vec3f::INVALID())
                 {
-                    point = ray.Intersect(p_left);
+                    point = ray.Intersect(p_right);
                     if (point.X <= cubeSize / 2 && point.Y <= cubeSize / 2 && point.Z <= cubeSize / 2
                         && point.X >= -cubeSize / 2 && point.Y >= -cubeSize / 2 && point.Z >= -cubeSize / 2)
                     {
                         isCrossing = true;
                     }
                 }
-                if (ray.Intersect(p_up) != !Vec3f()) 
+
+                point = ray.Intersect(p_up);
+                if (point != Vec3f::INVALID())
                 {
-                    point = ray.Intersect(p_left);
+                    point = ray.Intersect(p_up);
                     if (point.X <= cubeSize / 2 && point.Y <= cubeSize / 2 && point.Z <= cubeSize / 2
                         && point.X >= -cubeSize / 2 && point.Y >= -cubeSize / 2 && point.Z >= -cubeSize / 2)
                     {
                         isCrossing = true;
                     }
                 }
-                if (ray.Intersect(p_up) != !Vec3f()) 
+
+                point = ray.Intersect(p_bottom);
+                if (point != Vec3f::INVALID())
                 {
                     point = ray.Intersect(p_bottom);
                     if (point.X <= cubeSize / 2 && point.Y <= cubeSize / 2 && point.Z <= cubeSize / 2
@@ -116,10 +126,10 @@ int main() {
                 }
                 if (isCrossing) 
                 {
-                    tab[i][j] = '0';
+                    tab[X][Y] = '0';
                 }
                 else {
-                    tab[i][j] = '.';
+                    tab[X][Y] = '.';
                 }
                 isCrossing = false;
             }
@@ -131,29 +141,31 @@ int main() {
             }
             std::cout << std::endl;
         }
-        //std::cout << std::endl << std::endl << "pos: " << cam.position << ", dir: " << cam.direction << ", up: " << cam.up << std::endl;
+        std::cout << std::endl << std::endl;
+        
+        std::cout << "Position: " << cam.position << ", Direction: " << cam.direction << ", UpVector: " << cam.up << std::endl;
 
         while (!_kbhit()) {}
         if (_kbhit()) {
             input = _getch();
             switch (input) {
             case 'a':
-                angleY -= 1;
+                angleY -= change;
                 break;
             case 'd':
-                angleY += 1;
+                angleY += change;
                 break;
             case 'w':
-                angleX -= 1;
+                angleX -= change;
                 break;
             case 's':
-                angleX += 1;
+                angleX += change;
                 break;
             case 'q':
-                angleZ -= 1;
+                angleZ -= change;
                 break;
             case 'e':
-                angleZ += 1;
+                angleZ += change;
                 break;
             case 'z':
                 zoom -= 0.1;

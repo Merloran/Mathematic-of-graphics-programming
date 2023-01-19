@@ -2,46 +2,46 @@
 #include "../Public/Plane.h"
 
 Line::Line()
-	: V(Vec3f())
-	, P(Vec3f())
+	: Direction(Vec3f())
+	, Point(Vec3f())
 {
 }
 
-Line::Line(Vec3f V, Vec3f P)
-	: V(V)
-	, P(P)
+Line::Line(Vec3f Direction, Vec3f Point)
+	: Direction(Direction)
+	, Point(Point)
 {
 }
 
 Vec3f Line::Intersect(Line& L)
 {
 
-	if (V.Cross(L.V).LengthSquared() != 0.0f)
+	if (Direction.Cross(L.Direction).LengthSquared() != 0.0f)
 	{
-		float T = (P - L.P).Cross(V).DotProduct(V.Cross(L.V)) / V.Cross(L.V).LengthSquared();
-		return P + V * T;
+		float T = (Point - L.Point).Cross(Direction).DotProduct(Direction.Cross(L.Direction)) / Direction.Cross(L.Direction).LengthSquared();
+		return Point + Direction * T;
 	}
 	return Vec3f::INVALID();
 }
 
 Vec3f Line::Intersect(Plane& P)
 {
-	if (V.DotProduct(P.N) != 0.0)
+	if (Direction.DotProduct(P.Normal) != 0.0f)
 	{
-		float T = -P.N.DotProduct(this->P - P.P) / P.N.DotProduct(V);
-		return this->P + V * T;
+		float T = -P.Normal.DotProduct(Point - P.Point) / P.Normal.DotProduct(Direction);
+		return Point + (Direction * T);
 	}
 	return Vec3f::INVALID();
 }
 
 float Line::GetAngle(Line& L)
 {
-	return Vec3f::RadToDeg(Vec3f::GetAngle(V, L.V));
+	return Vec3f::RadToDeg(Vec3f::GetAngle(Direction, L.Direction));
 }
 
-float Line::GetAngle(Plane& P)
+float Line::GetAngle(Plane& Point)
 {
-	return Vec3f::RadToDeg(Vec3f::GetAngle(V, P.N));
+	return Vec3f::RadToDeg(Vec3f::GetAngle(Direction, Point.Normal));
 }
 
 Line Line::INVALID()

@@ -27,6 +27,12 @@ public:
 		, Z((Type)0)
 	{}
 
+	friend std::ostream& operator<<(std::ostream& os, Vector3<Type>& V)
+	{
+		os << "(" << V.Round(V.X) << ", " << V.Round(V.Y) << ", " << V.Round(V.Z) << ")";
+		return os;
+	}
+
 	bool operator==(const Vector3& V)
 	{
 		if (V.X == X && V.Y == Y && V.Z == Z)

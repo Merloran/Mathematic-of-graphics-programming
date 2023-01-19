@@ -2,7 +2,7 @@
 
 bool Face::Intersect(Line& L)
 {
-	if (L.V.DotProduct(N) == 0.0)
+	if (L.Direction.DotProduct(Normal) == 0.0)
 	{
 		return false;
 	}
@@ -13,13 +13,13 @@ bool Face::Intersect(Line& L)
 	Points[3] = Egdes[3].Intersect(Egdes[2]);
 
 	Vec3f normal = (Points[1] - Points[0]).Cross(Points[3] - Points[0]).Normalize();
-	float d = normal.DotProduct(Points[0] - L.P);
-	float t = d / normal.DotProduct(L.V);
+	float d = normal.DotProduct(Points[0] - L.Point);
+	float t = d / normal.DotProduct(L.Direction);
 	if (t < 0)
 	{
 		return false;
 	}
-	Vec3f intersectionPoint = L.P + L.V * t;
+	Vec3f intersectionPoint = L.Point + L.Direction * t;
 
 	Vec3f v1 = (Points[1] - Points[0]).Cross(intersectionPoint - Points[0]);
 	Vec3f v2 = (Points[3] - Points[1]).Cross(intersectionPoint - Points[1]);
